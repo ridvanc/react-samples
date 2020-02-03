@@ -1,29 +1,78 @@
-import React, {Component} from "react";
-import {Table, ListGroup, ListGroupItem, ListGroupItemHeading} from 'reactstrap';
+import React, {useState, useEffect} from "react";
+import {Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input} from 'reactstrap';
 
-export default class MainComponent extends Component {
-    state = {
-        todosList: []
-    }
+export const MainComponent = (props) => {
+    const [todos, setTodos] = useState([]);
+    const [modal, setModal] = useState(false);
+    const [unmountOnClose, setUnmountOnClose] = useState(true);
+    const toggle = () => setModal(!modal);
+    const [selectedTodo, setInput] = useState({id: 0, title: ''});
+    const click = (todoItem) => {
+        setInput({
+            id: todoItem.id,
+            title: todoItem.title
+        });
+        setModal(!modal);
+    };
 
-    componentDidMount() {
+    const handleInputChange = (e) => setInput({
+        ...selectedTodo,
+        [e.currentTarget.name]: e.currentTarget.value
+    });
+
+    const saveChanges = () => {
+        console.log(selectedTodo);
+    };
+
+    useEffect(() => {
         fetch("https://jsonplaceholder.typicode.com/todos/")
             .then(response => response.json())
-            .then(json => this.setState({todosList: json}))
-    }
+            .then(json => setTodos(json))
+    }, []);
 
-    render() {
-        return <>
-            <ListGroup flush>
+
+    return (
+        <>
+            <Table>
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Title</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
                 {
-                    this.state.todosList.map(todoItem => (
-                        <ListGroupItem active={todoItem.completed} key={todoItem.id}>
-                            <ListGroupItemHeading>{todoItem.title}</ListGroupItemHeading>
-                        </ListGroupItem>
+                    todos.map(todoItem => (
+                        <tr key={todoItem.id}>
+                            <th scope="row">{todoItem.id}</th>
+                            <td>{todoItem.title}</td>
+                            <td>
+                                <Button outline onClick={() => click(todoItem)} color="primary">primary</Button>
+                            </td>
+                        </tr>
                     ))
                 }
-            </ListGroup>
-        </>;
-    }
+                </tbody>
+            </Table>
+
+            <Modal isOpen={modal} toggle={toggle} unmountOnClose={unmountOnClose}>
+                <ModalHeader toggle={toggle}>Todo Edit</ModalHeader>
+                <ModalBody>
+                    <Input type="textarea"
+                           name="title"
+                           placeholder="Write something (data should remain in modal if unmountOnClose is set to false)"
+                           rows={5}
+                           value={selectedTodo.title}
+                           onChange={handleInputChange}
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="primary" onClick={saveChanges}>Do Something</Button>{' '}
+                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                </ModalFooter>
+            </Modal>
+        </>
+    );
 
 }
