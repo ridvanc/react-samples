@@ -22,6 +22,9 @@ export default class HeaderComponent extends Component {
                             <NavLink tag={Link} to="/home">Todos</NavLink>
                         </NavItem>
                         <NavItem>
+                            <NavLink tag={Link} to="/users">Users</NavLink>
+                        </NavItem>
+                        <NavItem>
                             <NavLink tag={Link} to="/about">About</NavLink>
                         </NavItem>
                     </Nav>

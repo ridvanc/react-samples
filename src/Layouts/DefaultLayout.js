@@ -4,18 +4,23 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import AboutComponent from "../Components/About/AboutComponent";
 import {MainComponent} from "../Components/Main/MainComponent";
 import NotFound from "../Pages/NotFound";
+import {User} from "../Components/User/User";
+import {Container} from "reactstrap";
 
 class DefaultLayout extends Component {
     render() {
         return (
             <div>
                 <HeaderComponent/>
-                <Switch>
-                    <Route path="/home" component={MainComponent}></Route>
-                    <Route path="/about" component={AboutComponent}></Route>
-                    <Redirect from="/" to="/home"/>
-                    <Route component={NotFound}></Route>
-                </Switch>
+                <Container>
+                    <Switch>
+                        <Route path="/home" component={MainComponent}></Route>
+                        <Route path="/users" component={User}></Route>
+                        <Route path="/about" component={AboutComponent}></Route>
+                        <Redirect from="/" to="/home"/>
+                        <Route component={NotFound}></Route>
+                    </Switch>
+                </Container>
             </div>
         );
     }
