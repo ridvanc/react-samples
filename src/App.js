@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Route, Switch} from "react-router-dom";
 import NotFound from "./Pages/NotFound";
-import DefaultLayout from "./Layouts/DefaultLayout";
+import {DefaultLayout} from "./Layouts/DefaultLayout";
 
 export default class App extends Component {
 

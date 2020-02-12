@@ -8,24 +8,21 @@ import {User} from "../Components/User/User";
 import {Container} from "reactstrap";
 import {UserDetail} from "../Components/User/UserDetail";
 
-class DefaultLayout extends Component {
-    render() {
-        return (
-            <div>
-                <HeaderComponent/>
-                <Container>
-                    <Switch>
-                        <Route path="/home" component={MainComponent}></Route>
-                        <Route path="/users/:id" component={UserDetail}></Route>
-                        <Route path="/users" component={User}></Route>
-                        <Route path="/about" component={AboutComponent}></Route>
-                        <Redirect from="/" to="/home"/>
-                        <Route component={NotFound}></Route>
-                    </Switch>
-                </Container>
-            </div>
-        );
-    }
-}
+export const DefaultLayout = () => {
+    return (
+        <div>
+            <HeaderComponent/>
+            <Container>
+                <Switch>
+                    <Route path="/home" component={MainComponent}></Route>
+                    <Route path="/users/:id" component={UserDetail}></Route>
+                    <Route path="/users" component={User}></Route>
+                    <Route path="/about" component={AboutComponent}></Route>
+                    <Redirect from="/" to="/home"/>
+                    <Route component={NotFound}></Route>
+                </Switch>
+            </Container>
+        </div>
+    );
 
-export default DefaultLayout;
+};
