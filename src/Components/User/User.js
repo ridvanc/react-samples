@@ -9,12 +9,19 @@ import {
     Media,
     Pagination,
     PaginationItem,
-    PaginationLink
+    PaginationLink, ModalHeader, ModalBody, ModalFooter, Modal
 } from "reactstrap";
 import Axios from "axios";
 import ReactLoading from "react-loading";
+import {Title} from "../../Common/Title";
+import {Link, useHistory} from 'react-router-dom';
+
 
 export const User = (props) => {
+    const [modalLoading, setModalLoading] = useState(false);
+    const [modal, setModal] = useState(false);
+    const [unmountOnClose] = useState(true);
+    const toggle = () => setModal(!modal);
     const [search, setSearch] = useState("");
     const [pageNumber, setPageNumber] = useState(0);
     const [pageData, setPageData] = useState({
@@ -26,6 +33,7 @@ export const User = (props) => {
     });
     const [pageLoading, setPageLoading] = useState(false);
     const url = "https://reqres.in/api";
+    let history = useHistory()
     const fetchUsers = () => {
         fetchUsersByPageNumber(pageNumber);
     };
@@ -47,14 +55,21 @@ export const User = (props) => {
 
     const clickSearch = (event) => {
         setSearch(event.target.value);
-        var filteredRecord = pageData.data.filter((item) => {
-            let searchValue = `${item.first_name} ${item.last_name}`;
-            return searchValue.indexOf(search) !== -1;
-        });
+    };
+    const editUser = (user) => {
+        setModal(!modal);
     };
     useEffect(() => {
         fetchUsers();
     }, []);
+
+    const onModalClose = (e) => {
+        fetchUsers();
+    };
+
+    const saveChanges = () => {
+        setModalLoading(false);
+    };
 
     return <>
         <h3>Users{search}</h3>
@@ -73,7 +88,7 @@ export const User = (props) => {
                 pageLoading ?
                     (
                         <>
-                            <h3>Current Page : {pageData.page} Number of records :{pageData.total}</h3>
+                            <Title title={ `Current Page :${pageData.page} Number of records :${pageData.total}` }></Title>
                             <Table striped={true}>
                                 <thead>
                                 <tr>
@@ -82,6 +97,7 @@ export const User = (props) => {
                                     <th>First Name</th>
                                     <th>Last Name</th>
                                     <th>Email</th>
+                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -97,7 +113,10 @@ export const User = (props) => {
                                                     </td>
                                                     <td>{user.first_name}</td>
                                                     <td>{user.last_name}</td>
-                                                    <td>{user.email}</td>
+                                                    <td>
+                                                        <Button tag={Link} outline color="primary" to={`/users/${user.id}`}
+                                                        >Edit</Button>
+                                                    </td>
                                                 </tr>
                                             ))
                                         ) :
@@ -133,6 +152,27 @@ export const User = (props) => {
                                                     onClick={(event) => clickPageNumber(event, pageData.total_pages - 1)}/>
                                 </PaginationItem>
                             </Pagination>
+                            <Modal isOpen={modal} toggle={toggle} onClosed={onModalClose}
+                                   unmountOnClose={unmountOnClose}>
+                                <ModalHeader toggle={toggle}>Todo Edit</ModalHeader>
+                                <ModalBody>
+                                    {
+                                        modalLoading ?
+                                            (
+                                                <>
+
+                                                </>
+                                            ) :
+                                            (
+                                                <ReactLoading type={"bars"} color={"red"}/>
+                                            )
+                                    }
+                                </ModalBody>
+                                <ModalFooter>
+                                    <Button color="primary" onClick={saveChanges}>Do Something</Button>{' '}
+                                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
                         </>
                     )
                     :

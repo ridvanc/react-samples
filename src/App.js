@@ -9,7 +9,7 @@ export default class App extends Component {
         return <div>
             <Switch>
                 <Route exatch path="/404" component={NotFound}></Route>
-                <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>} />
+                <Route path="/" name="Home" render={props => <DefaultLayout {...props}/>}/>
             </Switch>
         </div>;
     }
