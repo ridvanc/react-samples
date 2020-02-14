@@ -4,9 +4,10 @@ import {decreaseCounter} from '../redux/actions/counterActions'
 import {connect} from "react-redux"
 import {changeTitle} from "../redux/actions/titleActions";
 import {Input} from "reactstrap";
+import titleReducer from "../redux/reducers/titleReducer";
 
 
-const DecreaseCounter = ({decrease, changeTitle}) => {
+const DecreaseCounter = ({title, decrease, changeTitle}) => {
     return (
         <div>
             <button onClick={e => {
@@ -14,14 +15,16 @@ const DecreaseCounter = ({decrease, changeTitle}) => {
             }}>
                 1 eksilt
             </button>
-            <Input placeholder="Search Users" className={"form-control form-control-lg"}
+            <Input placeholder="Search Users" className={"form-control form-control-lg"} value={title}
                    onChange={(event) => changeTitle(event.target.value)}/>
         </div>
     )
 };
 
-function mapStateToProps() {
-    return {}
+function mapStateToProps(state) {
+    return {
+        title: state.titleReducer
+    }
 }
 
 const mapDispatchToProps = (dispatch) => {
