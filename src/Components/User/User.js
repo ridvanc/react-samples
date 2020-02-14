@@ -13,8 +13,11 @@ import {
 } from "reactstrap";
 import Axios from "axios";
 import ReactLoading from "react-loading";
-import {Title} from "../../Common/Title";
 import {Link, useHistory} from 'react-router-dom';
+import Counter from "../Counter";
+import IncreaseCounter from "../IncreaseCounter";
+import DecreaseCounter from "../DecreaseCounter";
+import Title from "../../Common/Title";
 
 
 export const User = (props) => {
@@ -83,12 +86,17 @@ export const User = (props) => {
                 </InputGroupAddon>
             </InputGroup>
         </Row>
+        <Row>
+            <Title/>
+            <DecreaseCounter/>
+            <Counter/>
+            <IncreaseCounter/>
+        </Row>
         <Row lg={12} sm={12} md={12} xl={12} xs={12}>
             {
                 pageLoading ?
                     (
                         <>
-                            <Title title={ `Current Page :${pageData.page} Number of records :${pageData.total}` }></Title>
                             <Table striped={true}>
                                 <thead>
                                 <tr>
@@ -114,7 +122,8 @@ export const User = (props) => {
                                                     <td>{user.first_name}</td>
                                                     <td>{user.last_name}</td>
                                                     <td>
-                                                        <Button tag={Link} outline color="primary" to={`/users/${user.id}`}
+                                                        <Button tag={Link} outline color="primary"
+                                                                to={`/users/${user.id}`}
                                                         >Edit</Button>
                                                     </td>
                                                 </tr>
