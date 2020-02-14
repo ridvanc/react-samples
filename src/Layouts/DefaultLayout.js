@@ -7,10 +7,12 @@ import NotFound from "../Pages/NotFound";
 import {User} from "../Components/User/User";
 import {Container} from "reactstrap";
 import {UserDetail} from "../Components/User/UserDetail";
+import Loader from "../Common/Loader";
 
 export const DefaultLayout = () => {
     return (
         <div>
+            <Loader/>
             <HeaderComponent/>
             <Container>
                 <Switch>

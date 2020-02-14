@@ -18,6 +18,7 @@ import Counter from "../Counter";
 import IncreaseCounter from "../IncreaseCounter";
 import DecreaseCounter from "../DecreaseCounter";
 import Title from "../../Common/Title";
+import LoaderManager from "../../Common/LoaderManager";
 
 
 export const User = (props) => {
@@ -87,6 +88,7 @@ export const User = (props) => {
             </InputGroup>
         </Row>
         <Row>
+            <LoaderManager/>
             <Title/>
             <DecreaseCounter/>
             <Counter/>
