@@ -3,10 +3,10 @@ import {Table, Button, Modal, ModalHeader, ModalBody, ModalFooter, Input} from '
 
 import Axios from "axios";
 import {connect} from "react-redux";
-import {closeLoading, openLoading} from "../../redux/actions/loadingActions";
-import {CustomModal} from "../../Common/CustomModal";
+import {closeLoading, closeModalLoading, openLoading, openModalLoading} from "../../redux/actions/loadingActions";
+import CustomModal from "../../Common/CustomModal";
 
-const MainComponent = ({open, close}) => {
+const MainComponent = ({modalLoading, open, close, openModalLoading, closeModalLoading}) => {
     const [todos, setTodos] = useState([]);
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -25,8 +25,10 @@ const MainComponent = ({open, close}) => {
     });
 
     const saveChanges = () => {
+        openModalLoading();
         Axios.put("https://jsonplaceholder.typicode.com/posts/" + selectedTodo.id, selectedTodo)
             .then(response => {
+                closeModalLoading();
                 console.log(response.data);
             });
     };
@@ -74,8 +76,9 @@ const MainComponent = ({open, close}) => {
                 }
                 </tbody>
             </Table>
-            <CustomModal title={"Edit Todo"} modal={modal} toggle={toggle} onModalClose={onModalClose} unmountOnClose={true}
-                         saveChanges={saveChanges}>
+            <CustomModal title={"Edit Todo"} modal={modal} toggle={toggle}
+                         onModalClose={onModalClose} unmountOnClose={true}
+                         process={saveChanges}>
                 <Input type="textarea"
                        name="title"
                        placeholder="Write something (data should remain in modal if unmountOnClose is set to false)"
@@ -90,7 +93,9 @@ const MainComponent = ({open, close}) => {
 };
 
 function mapStateToProps(state) {
-    return {};
+    return {
+        modalLoading: state.modalLoadingReducer
+    };
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -100,6 +105,12 @@ const mapDispatchToProps = (dispatch) => {
         },
         close: () => {
             dispatch(closeLoading());
+        },
+        openModalLoading: () => {
+            dispatch(openModalLoading());
+        },
+        closeModalLoading: () => {
+            dispatch(closeModalLoading());
         }
     }
 };
