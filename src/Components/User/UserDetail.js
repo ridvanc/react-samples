@@ -1,7 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {useParams} from "react-router-dom";
-import {Button, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import ReactLoading from "react-loading";
 import Axios from "axios";
 
 export const UserDetail = (props) => {

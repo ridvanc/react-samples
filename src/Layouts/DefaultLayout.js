@@ -1,18 +1,24 @@
-import React, {Component} from 'react';
+import React from 'react';
 import HeaderComponent from "../Components/Header/HeaderComponent"
 import {Redirect, Route, Switch} from "react-router-dom";
 import AboutComponent from "../Components/About/AboutComponent";
-import {MainComponent} from "../Components/Main/MainComponent";
+import MainComponent from "../Components/Main/MainComponent";
 import NotFound from "../Pages/NotFound";
-import {User} from "../Components/User/User";
+import User from "../Components/User/User";
 import {Container} from "reactstrap";
 import {UserDetail} from "../Components/User/UserDetail";
-import Loader from "../Common/Loader";
+import LoadingOverlay from "react-loading-overlay";
+import {connect} from "react-redux";
+import "../index.css";
+import {BeatLoader} from "react-spinners";
 
-export const DefaultLayout = () => {
+const DefaultLayout = ({loading}) => {
     return (
-        <div>
-            <Loader/>
+        <LoadingOverlay
+            active={loading}
+            spinner={<BeatLoader/>}
+            text=''
+        >
             <HeaderComponent/>
             <Container>
                 <Switch>
@@ -24,7 +30,15 @@ export const DefaultLayout = () => {
                     <Route component={NotFound}></Route>
                 </Switch>
             </Container>
-        </div>
+        </LoadingOverlay>
     );
 
 };
+
+function mapStateToProps(state) {
+    return {
+        loading: state.loadingReducer
+    }
+}
+
+export default connect(mapStateToProps)(DefaultLayout);
